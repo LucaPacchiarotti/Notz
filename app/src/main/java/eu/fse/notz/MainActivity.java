@@ -8,12 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Amministratore on 12/04/2018.
  */
 
 public class MainActivity extends AppCompatActivity {
-    String [] myDataset = {"nota 1", "nota 2", "nota 3"};
+    //private String [] myDataset = {"nota 1", "nota 2", "nota 3","nota 4"};
+
+    private ArrayList<Note> myDataset;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -29,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        myDataset = new ArrayList<>();
+        Note pinPalazzo = new Note("PIN","12345");
+        myDataset.add(pinPalazzo);
 
         mAdapter = new NotesAdapter (myDataset);
         mRecyclerView.setAdapter(mAdapter);
