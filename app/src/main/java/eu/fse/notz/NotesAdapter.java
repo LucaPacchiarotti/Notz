@@ -3,6 +3,7 @@ package eu.fse.notz;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -16,10 +17,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private ArrayList<Note> mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
+        public TextView titleTV, descriptionTV;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            titleTV = itemView.findViewById(R.id.title_Tv);
+            descriptionTV = itemView.findViewById(R.id.description_Tv);
+
         }
     }
 
@@ -30,7 +35,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public NotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_note, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
@@ -40,7 +45,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder( NotesAdapter.ViewHolder holder, int position) {
         Note currentNote = mDataset.get(position);
-        holder.mTextView.setText(currentNote.getTitle());
+        holder.titleTV.setText(mDataset.get(position).getTitle());
+        holder.descriptionTV.setText(mDataset.get(position).getDescription());
+
 
 
     }
