@@ -1,52 +1,51 @@
 package eu.fse.notz;
 
-import android.app.Activity;
-
 /**
- * Created by Amministratore on 12/04/2018.
+ * Created by amine on 12/04/18.
  */
 
 public class Note {
 
-    private String title;
-    private String description;
+    private String title,description;
     private int id;
-    private boolean showOnTop;
+    private boolean isShownOnTop;
+
 
     public Note(String title, String description){
         this.title = title;
         this.description = description;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setShowOnTop(boolean showOnTop) {
-        this.showOnTop = showOnTop;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {
         return id;
     }
 
-    public boolean isShowOnTop() {
-        return showOnTop;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isShownOnTop() {
+        return isShownOnTop;
+    }
+
+    public void setShownOnTop(boolean shownOnTop) {
+        isShownOnTop = shownOnTop;
     }
 }
