@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
                         data.getStringExtra("title"),
                         data.getStringExtra("description"));
 
-            }else {
-                if(resultCode==RERSULT_DELETE){
+            } else {
+                if (resultCode == RERSULT_DELETE) {
                     int editedNotePosition = data.getIntExtra("position", -1);
                     mAdapter.cancel(editedNotePosition);
                 }
+
+
             }
 
         }
