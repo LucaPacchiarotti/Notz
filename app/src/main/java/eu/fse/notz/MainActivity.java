@@ -3,8 +3,10 @@ package eu.fse.notz;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,8 +15,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private NotesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FloatingActionButton addNoteButton;
+    private ProgressBar Loading;
+
+
 
     // private String[] myDataset = {"nota 1"," nota 2", "fai la spesa", "paga bolletta luca", "dadsadasa", "dsasdasd", "dassad"};
     private ArrayList<Note> myDataset;
@@ -45,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.notes_rv);
+        Loading = (ProgressBar)findViewById(R.id.loadingPanel);
+
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -68,12 +80,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                 showDialog();
 
-                getNotesFromURL();
 
             }
+
         });
+        getNotesFromURL();
+
 
     }
 
@@ -148,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void getNotesFromURL() {
 
         //Make HTTP call
@@ -165,8 +182,9 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        Loading.setVisibility(View.GONE);
                         // TODO manage success
-                        Log.d("jsonRequest",response.toString());
+                        Log.d("jsonRequest", response.toString());
                         ArrayList<Note> noteListFromResponse = Note.getNotesList(response);
                         mAdapter.addNotesList(noteListFromResponse);
                     }
@@ -175,10 +193,26 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("jsonRequest",error.getMessage());
+                        Loading.setVisibility(View.GONE);
+                       /* Log.e("jsonRequest",error.getMessage());
                         Toast.makeText(MainActivity.this,
                                 error.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG).show();*/
+
+                        String body;
+                        //get status code here
+                        String statusCode = String.valueOf(error.networkResponse.statusCode);
+                        //get response body and parse with appropriate encoding
+                        if (error.networkResponse.data != null) {
+                            try {
+                                body = new String(error.networkResponse.data, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+
+                            }
+
+                        }
+                        Toast.makeText(MainActivity.this, "error 404", Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -190,3 +224,4 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
